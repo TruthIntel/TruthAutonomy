@@ -1,8 +1,8 @@
 import json
 from typing import Any, List, Optional
 import cloudscraper
-from exceptions import TruthSocialAPIError
-from models import MediaResponse, PostResponse
+from .exceptions import TruthSocialAPIError
+from .models import MediaResponse, PostResponse
 
 
 class TruthSocial:
