@@ -1,6 +1,7 @@
 import unittest
-from unittest.mock import patch, mock_open, MagicMock
-from truthautonomy import TruthSocial, TruthSocialAPIError, PostResponse, MediaResponse
+from unittest.mock import MagicMock, mock_open, patch
+
+from truthautonomy import MediaResponse, PostResponse, TruthSocial, TruthSocialAPIError
 
 
 class TestTruthSocial(unittest.TestCase):
