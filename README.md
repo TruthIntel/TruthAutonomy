@@ -29,7 +29,7 @@ pip install git+https://github.com/TruthIntel/TruthAutonomy
 
 Here’s how to get started:
 
-### 1. Initialize the Client
+### Initialize the Client
 
 ```python
 from truthautonomy import TruthSocial
@@ -39,7 +39,7 @@ auth_bearer = "YOUR_BEARER_TOKEN"
 ts = TruthSocial(auth_bearer=auth_bearer)
 ```
 
-### 2. Create a Post
+### Create a Post
 
 ```python
 response = ts.send_post(
@@ -49,7 +49,7 @@ response = ts.send_post(
 print(response.url)  # View your post's URL
 ```
 
-### 3. Upload Media
+### Upload Media
 
 ```python
 media_response = response = ts.send_post(
@@ -59,60 +59,194 @@ media_response = response = ts.send_post(
 )
 print(media_response.url)  # Get the uploaded media's URL
 ```
+---
+
+### **Search**
+
+```python
+# Search for posts containing the keyword 'news'
+results = client.search(query="news", search_type="statuses", limit=10)
+
+for result in results.get("statuses", []):
+    print(result["content"])
+```
 
 ---
 
-## 📖 Documentation
-
-### Initialization
+### **Pull Statuses**
 
 ```python
-TrustSocial(auth_bearer: str)
-```
-- **auth_bearer** *(str)*: Your Truth Social Bearer token (required).
+from datetime import datetime
 
-### Methods
-
-#### `send_post()`
-
-Create a post on Truth Social.
-
-```python
-ts.send_post(
-    content: str,                # Post content
-    media_files: List[str] = [], # Optional list of media file paths or media IDs
-    visibility: str = "public"   # Post visibility: "public", "private", etc.
+# Pull recent statuses from a user
+statuses = client.pull_statuses(
+    username="truthuser",
+    replies=False,
+    verbose=True,
+    created_after=datetime(2024, 1, 1),  # Fetch posts created after this date
 )
+
+for status in statuses:
+    print(status["content"])
 ```
-
-#### `upload_media()`
-
-Upload a media file to Truth Social.
-
-```python
-media_response = ts.upload_media(file_path: str)
-```
-
-- **file_path** *(str)*: Path to the media file.
 
 ---
 
-## 🛠️ Development
+### **Pull Comments**
 
-Clone the repository and set up the environment:
+```python
+# Pull comments for a given post
+comments = client.pull_comments(post_id="123456789", include_all=True, top_num=50)
 
-```bash
-git clone https://github.com/TruthIntel/truthautonomy.git
-cd truthautonomy
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
+for comment in comments:
+    print(comment["content"])
 ```
 
-Run the tests:
+---
 
-```bash
-python -m unittest test.py
+#### Fetch Users Who Liked a Post
+
+```python
+# Example Post URL
+post_url = "https://truthsocial.com/@user/post/12345"
+
+# Fetch top 10 users who liked the post
+for user in client.user_likes(post_url, include_all=False, top_num=10):
+    print(user)
+```
+
+---
+
+#### Fetch Followers of a User
+
+```python
+# Fetch followers of a user by handle
+for follower in client.user_followers(user_handle="@user", maximum=50):
+    print(follower)
+```
+
+---
+
+#### Fetch Users a User is Following
+
+```python
+# Fetch following list of a user
+for following in client.user_following(user_handle="@user", maximum=50):
+    print(following)
+```
+
+---
+
+#### Post a New Status
+
+```python
+# Post content with optional media
+content = "Hello, TruthSocial!"
+media_files = ["path/to/image1.jpg", "path/to/image2.png"]
+
+response = client.send_post(content, media_files=media_files, visibility="public")
+print(response)
+```
+
+---
+
+#### Upload Media
+
+```python
+# Upload a single media file
+media_file = "path/to/media.jpg"
+media_response = client.upload_media(media_file)
+print(f"Uploaded Media ID: {media_response.id}")
+```
+
+---
+
+#### Lookup a User's Information
+
+```python
+# Get user information by handle
+user_info = client.lookup(user_handle="@user")
+print(user_info)
+```
+
+---
+
+#### Fetch Trending Posts
+
+```python
+# Fetch top 10 trending posts
+trending_posts = client.trending(limit=10)
+print(trending_posts)
+```
+
+---
+
+#### Fetch Trending Tags
+
+```python
+# Fetch trending tags
+tags = client.tags()
+print(tags)
+```
+
+---
+
+#### Fetch Suggested Users
+
+```python
+# Fetch suggested users
+suggested_users = client.suggested(maximum=20)
+print(suggested_users)
+```
+
+---
+
+#### Fetch Trending Group Tags
+
+```python
+# Fetch trending group tags
+group_tags = client.group_tags()
+print(group_tags)
+```
+
+---
+
+#### Fetch Group Posts
+
+```python
+# Fetch posts from a specific group
+group_id = "12345"
+group_posts = client.group_posts(group_id, limit=10)
+print(group_posts)
+```
+
+---
+
+#### Simulate Random Interactions
+
+```python
+# Perform random user interactions
+client.random_interactions()
+```
+
+---
+
+#### Generate Random Trending Tags
+
+```python
+# Generate random trending tags
+trending_tags = client.random_trending_tags()
+print(trending_tags)
+```
+
+---
+
+#### Generate Random Suggestions
+
+```python
+# Generate random user and group suggestions
+suggestions = client.random_suggestions()
+print(suggestions)
 ```
 
 ---
