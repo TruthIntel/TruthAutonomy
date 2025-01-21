@@ -36,13 +36,13 @@ from truthautonomy import TruthSocial
 
 # Replace with your Bearer token
 auth_bearer = "YOUR_BEARER_TOKEN"
-ts = TruthSocial(auth_bearer=auth_bearer)
+client = TruthSocial(auth_bearer=auth_bearer)
 ```
 
 ### Create a Post
 
 ```python
-response = ts.send_post(
+response = client.send_post(
     content="Hello, TruthSocial! This is my first post. 🚀",
     visibility="public"
 )
@@ -52,7 +52,7 @@ print(response.url)  # View your post's URL
 ### Upload Media
 
 ```python
-media_response = response = ts.send_post(
+media_response = client.send_post(
     content="Hello, TruthSocial! This is my first post. 🚀",
     media_files=["path/to/image.jpg"]
     visibility="public"
